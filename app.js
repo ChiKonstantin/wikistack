@@ -1,6 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const { addPage, editPage, main, userList, userPages, wikiPage } = require('./views');
+const { db, Page, User } = require('./models');
+
+db.authenticate()
+  .then(() => {
+    console.log('connected to the database');
+  })
+
 
 const PORT = 3000;
 
@@ -17,6 +24,14 @@ app.get('/', (req, res) => {
     res.send(main(''));
 });
 
-app.listen(PORT, () => {
-    console.log(`Listeting to port: ${PORT}`);
-})
+async function connector() {
+    try {
+        await db.sync({ force: true })
+        app.listen(PORT, () => {
+            console.log(`Listeting to port: ${PORT}`);
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+connector();
