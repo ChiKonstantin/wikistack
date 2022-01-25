@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const { addPage, editPage, main, userList, userPages, wikiPage } = require('./views');
-const { db, Page, User } = require('./models');
+const { db } = require('./models');
 const wikiRouter = require('./routes/wiki');
 const userRouter = require('./routes/users');
 
@@ -31,7 +31,8 @@ app.get('/', (req, res) => {
 
 async function connector() {
     try {
-        await db.sync({ force: true })
+        // await db.sync({force: true});
+        await db.sync();
         app.listen(PORT, () => {
             console.log(`Listeting to port: ${PORT}`);
         })

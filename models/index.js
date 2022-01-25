@@ -20,7 +20,7 @@ const Page = db.define("page", {
 })
 
 Page.addHook('beforeValidate', (page) => {
-  page.slug = page.title.replace(/\s+/,'_').replace(/\W/g, '')
+  page.slug = page.title.replace(/\s+/g,'_').replace(/\W/g, '');
 })
 
 const User = db.define("user", {
@@ -37,6 +37,8 @@ const User = db.define("user", {
   },
 })
 
-module.exports = {
-  db, Page, User
-}
+// user.hasMany(page)
+Page.belongsTo(User, {as: 'author'});
+
+
+module.exports = { db, Page, User }
